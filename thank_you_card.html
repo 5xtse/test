@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>感謝卡產生器</title>
+  <style>
+    body {
+      font-family: "Noto Sans TC", sans-serif;
+      background-color: #fef8f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2em;
+    }
+    #card {
+      width: 600px;
+      height: 400px;
+      background: #fff8e7;
+      border: 2px solid #f2cfa5;
+      border-radius: 16px;
+      padding: 2em;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    h2 {
+      color: #d17b0f;
+      margin-bottom: 0.5em;
+    }
+    .to, .from, .message {
+      font-size: 1.2em;
+      margin: 1em 0;
+    }
+    .label {
+      font-weight: bold;
+      color: #555;
+    }
+    #download {
+      margin-top: 2em;
+      padding: 0.6em 1.2em;
+      font-size: 1em;
+      background-color: #f2cfa5;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="card">
+    <h2>💌 感謝卡</h2>
+    <div class="to"><span class="label">To：</span><span id="toText"></span></div>
+    <div class="message"><span class="label">內容：</span><span id="messageText"></span></div>
+    <div class="from"><span class="label">From：</span><span id="fromText"></span></div>
+  </div>
+  <button id="download">下載感謝卡</button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param) || "";
+    }
+
+    document.getElementById("toText").textContent = getQueryParam("to");
+    document.getElementById("fromText").textContent = getQueryParam("from");
+    document.getElementById("messageText").textContent = getQueryParam("message");
+
+    document.getElementById("download").addEventListener("click", () => {
+      html2canvas(document.getElementById("card")).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "thank_you_card.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    });
+  </script>
+</body>
+</html>
